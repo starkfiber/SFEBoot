@@ -1,0 +1,10 @@
+node_modules/
+*.iso
+*.img
+*.qcow2
+*.vhdx
+*.vmdk
+*.log
+.env*
+website/sfeboot-source.zip
+.DS_Store

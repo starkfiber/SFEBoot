@@ -1,0 +1,31 @@
+{
+  "name": "sfeboot",
+  "version": "0.7.0",
+  "type": "module",
+  "license": "MIT",
+  "description": "File-image engineering through CLI, local API and MCP, with qualified virtual boot recipes",
+  "bin": {
+    "sfeboot": "cli.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node test.mjs && node test-pack.mjs && node vm/test-tools.mjs && node --test tests/*.test.mjs",
+    "start": "node cli.mjs serve",
+    "mcp": "node cli.mjs mcp",
+    "plan": "node cli.mjs plan catalog.example.json",
+    "vm:build": "node vm/build.mjs",
+    "vm:verify": "node vm/verify-boot.mjs",
+    "website": "node cli.mjs serve",
+    "usb:build": "node vm/build-usb.mjs",
+    "usb:verify": "node vm/verify-usb.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "30.1.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/starkfiber/SFEBoot.git"
+  }
+}

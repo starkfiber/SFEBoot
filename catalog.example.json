@@ -1,0 +1,10 @@
+{
+  "capacityBytes": 64000000000,
+  "reserveBytes": 536870912,
+  "overheadPercent": 2,
+  "images": [
+    {"id":"windows-x64","title":"Windows installer","os":"windows","architecture":"x86_64","bytes":6000000000,"source":"/absolute/path/to/windows.iso"},
+    {"id":"linux-live","title":"Linux live installer","os":"linux","architecture":"x86_64","bytes":4000000000,"source":"/absolute/path/to/linux.iso"},
+    {"id":"macos-reference","title":"macOS installer reference","os":"macos","architecture":"arm64","bytes":14000000000,"source":"/absolute/path/to/macos-image.img"}
+  ]
+}
