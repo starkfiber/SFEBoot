@@ -21,7 +21,7 @@ function harness(fetchImpl=async()=>{throw Error('Unexpected network request');}
  // Enable the parser's scripting flag so noscript stays inert. External resources
  // are not loaded; only our local first-party app is evaluated below.
  const dom=new JSDOM(html,{url,runScripts:'dangerously',pretendToBeVisual:true,virtualConsole});const w=dom.window;
- Object.defineProperty(w,'crypto',{value:webcrypto});w.AbortSignal=AbortSignal;
+ Object.defineProperty(w,'crypto',{value:webcrypto});w.AbortSignal=AbortSignal;w.AbortController=AbortController;
  w.fetch=(...args)=>{requests.push(args);return fetchImpl(...args);};w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.HTMLAnchorElement.prototype.click=()=>{};
  w.eval(app);assert.deepEqual(errors,[],'App initializes without JavaScript errors');
  const $=s=>w.document.querySelector(s);
