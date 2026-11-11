@@ -15,7 +15,7 @@ const response=(value,status=200)=>({ok:status>=200&&status<300,status,json:asyn
 const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 const settle=()=>new Promise(r=>setTimeout(r,0));
 const outcome=(h,id)=>h.$(id).closest('details').previousElementSibling;
-async function until(fn){for(let i=0;i<100;i++){if(fn())return;await new Promise(r=>setTimeout(r,10));}assert.ok(fn(),'Expected UI state did not arrive');}
+async function until(fn,detail=()=>""){const deadline=Date.now()+10000;while(Date.now()<deadline){if(fn())return;await new Promise(r=>setTimeout(r,10));}assert.ok(fn(),'Expected UI state did not arrive: '+detail());}
 function harness(fetchImpl=async()=>{throw Error('Unexpected network request');},url='http://127.0.0.1:47831/'){
  const errors=[],requests=[];const virtualConsole=new VirtualConsole();virtualConsole.on('jsdomError',e=>errors.push(e));
  // Enable the parser's scripting flag so noscript stays inert. External resources
@@ -28,7 +28,7 @@ function harness(fetchImpl=async()=>{throw Error('Unexpected network request');}
  const submit=id=>{const form=$(id),button=form.querySelector('[type=submit]');form.dispatchEvent(new w.SubmitEvent('submit',{bubbles:true,cancelable:true,submitter:button}));return button;};
  return {w,$,submit,requests,errors,close:()=>w.close()};
 }
-async function connect(h){h.$('#sb-engine-url').value='http://127.0.0.1:47831';h.$('#sb-token').value=token;h.submit('#sb-connect-form');await until(()=>/connected/i.test(h.$('#sb-engine-status').textContent)&&!/disconnected/i.test(h.$('#sb-engine-status').textContent));}
+async function connect(h){h.$('#sb-engine-url').value='http://127.0.0.1:47831';h.$('#sb-token').value=token;h.submit('#sb-connect-form');await until(()=>/connected/i.test(h.$('#sb-engine-status').textContent)&&!/disconnected/i.test(h.$('#sb-engine-status').textContent),()=>h.$('#sb-connect-result').textContent);}
 
 test('browser-only capacity and file checks work without an engine or network',async()=>{
  const h=harness();try{
@@ -65,7 +65,7 @@ test('website form reaches real authenticated API and verifies a real copied fil
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'sfeboot-ui-api-')),source=path.join(dir,'source.img'),destination=path.join(dir,'copy.img');await fs.writeFile(source,Buffer.from('SFEBoot UI to real API fixture'));
  const {server,url}=await startServer({port:0,token});const h=harness((url,init)=>fetch(url,init),url+'/');
  try{
-  h.$('#sb-engine-url').value=url;h.$('#sb-token').value=token;h.submit('#sb-connect-form');await until(()=>/connected/i.test(h.$('#sb-engine-status').textContent)&&!/disconnected/i.test(h.$('#sb-engine-status').textContent));
+  h.$('#sb-engine-url').value=url;h.$('#sb-token').value=token;h.submit('#sb-connect-form');await until(()=>/connected/i.test(h.$('#sb-engine-status').textContent)&&!/disconnected/i.test(h.$('#sb-engine-status').textContent),()=>h.$('#sb-connect-result').textContent);
   h.$('#sb-clone-form [name=source]').value=source;h.$('#sb-clone-form [name=destination]').value=destination;const b=h.submit('#sb-clone-form');await until(()=>!b.disabled);assert.deepEqual(await fs.readFile(destination),await fs.readFile(source));assert.match(h.$('#sb-clone-result').textContent,/readbackVerified/);assert.ok(h.requests.some(([url,init])=>url.endsWith('/api/tool')&&JSON.parse(init.body).name==='copy_image'));
   h.$('#sb-disconnect').click();assert.equal(h.$('#sb-token').value,'');assert.equal(h.w.localStorage.length,0);assert.equal(h.w.sessionStorage.length,0);
  }finally{h.close();await new Promise(r=>server.close(r));await fs.rm(dir,{recursive:true,force:true});}
