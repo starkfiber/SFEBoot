@@ -1,4 +1,4 @@
-const VERSION='sfeboot-local-v1';
+const VERSION='sfeboot-local-v2';
 const ROOT=new URL('./',self.location).href;
 const FILES=['./','app.js','style.css','hash-worker.mjs','sha256.mjs','favicon.svg','manifest.webmanifest','pwa.js'].map(p=>new URL(p,ROOT).href);
 self.addEventListener('install',event=>event.waitUntil(caches.open(VERSION).then(cache=>cache.addAll(FILES))));
