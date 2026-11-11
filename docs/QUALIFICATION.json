@@ -1,0 +1,89 @@
+{
+  "release": "0.6.1",
+  "imageSha256": "881b9042429aa1356cdd1ecfee31da2cf5bfc84bebfa630a42a4c2d8fb7f969d",
+  "imageBytes": 187039744,
+  "host": "ARM64 macOS",
+  "emulator": "QEMU virt with HVF, XHCI and usb-storage, media=disk, readonly=on",
+  "entries": [
+    "3.24.3",
+    "3.23.7"
+  ],
+  "pipeline": [
+    "pinned-input-build",
+    "file-backed-streaming-burn",
+    "flush-and-readback",
+    "actual-USB-boot-for-each-entry",
+    "exact-release-and-repository",
+    "USB-driver-and-sysfs-and-mount",
+    "installer-help",
+    "normal-poweroff-and-process-exit"
+  ],
+  "passed": true,
+  "topology": "Only installer storage attached; fixed /media/sda paths",
+  "physicalHardwareQualified": false,
+  "windowsVssExecuted": false,
+  "osInstalled": false,
+  "publicBinaryRelease": false,
+  "x86": {
+    "host": "ARM64 macOS",
+    "guest": "Alpine virt3.24.3 x86_64",
+    "emulator": "QEMU q35/TCG",
+    "firmware": [
+      "UEFI EDK2 CODE + owned VARS",
+      "legacy BIOS"
+    ],
+    "imageSha256": "86bd89b3aaf8a5b7cae4cc24dca201160790503ef4df57d9b58d5f90484cded1",
+    "transport": "QEMU XHCI usb-storage, media=disk, readonly=on",
+    "guestEvidence": [
+      "exact release",
+      "x86_64 architecture",
+      "repository",
+      "exact command-line tokens",
+      "USB sysfs/driver/mount",
+      "installer help",
+      "clean poweroff"
+    ],
+    "passed": true,
+    "browserApiBootPassed": true,
+    "secureBootQualified": false
+  },
+  "windows": {
+    "mediaBuilder": "experimental; synthetic FAT32/GPT tests passed",
+    "fullIsoBuildExecuted": false,
+    "setupUsbBootPassed": true,
+    "vssRuntimePassed": false,
+    "guest": "Windows Server2025 Setup/WinPE10.0.26100.32230",
+    "mediaScope": "Setup-only test image; no installation payload",
+    "imageSha256": "a11e82265c28971d88de97e964606073d6b3ebd801a688b6d87c0263e7403d07",
+    "imageBytes": 1073741824,
+    "partitionType": "Microsoft Basic Data",
+    "fileSystem": "FAT32",
+    "guestUsbTypeVerified": true,
+    "guestVolumeMounted": true,
+    "guestBootWimReadableBytes": 609628866,
+    "setupMissingMediaMessageObserved": true,
+    "fullInstallerUsabilityQualified": false,
+    "headlessProvisioningPassed": true,
+    "vssRuntimeBlocker": "Persisted Windows first-run setup unfinished; startup task did not run"
+  },
+  "physicalWriteReadback": {
+    "passed": true,
+    "host": "macOS ARM64",
+    "sampleCount": 1,
+    "deviceReportedBytes": 134217728000,
+    "writtenPrefixBytes": 187039744,
+    "sourceSha256": "881b9042429aa1356cdd1ecfee31da2cf5bfc84bebfa630a42a4c2d8fb7f969d",
+    "steps": [
+      "explicit exact-device approval",
+      "stable IORegistry identity",
+      "unmounted raw write",
+      "flush",
+      "full written-range SHA256 readback",
+      "separate raw-device prefix capture",
+      "both Alpine entries booted from captured bytes in QEMU USB"
+    ],
+    "physicalMachineBootTested": false,
+    "fullCapacityTested": false,
+    "tailBytesOverwritten": false
+  }
+}
