@@ -1,0 +1,12 @@
+{
+  "name": "sfeboot",
+  "version": "0.7.0",
+  "description": "Local image inspection, boot qualification and reviewed device plans.",
+  "skills": "./skills",
+  "mcpServers": "./.codex-plugin/mcp.json",
+  "interface": {
+    "displayName": "SFEBoot",
+    "shortDescription": "Local image and boot engineering",
+    "category": "Developer Tools"
+  }
+}
